@@ -35,25 +35,32 @@ class etherscanApi {
 
     /// Initializes the GET request for a series of block numbers.
     async getEventTxs(fromBlock, currentblock, eventHash, increment){
+        console.log('Processing transactions from block: ' + fromBlock + ' to ' + currentblock);
+        console.log('Using increments of: ' + increment);
+        console.log('Searching for: ' + Constants.EventHashesLookup[eventHash]);
+        console.log('Total amount of blocks to process: ' + (currentblock - fromBlock) + '\n\n');
+
         let data = [];
+        console.log('------------------------Start of GET Requests------------------------------\n');
 
         for (let i = fromBlock; i < currentblock; i += increment + 1){
             let from = i;
             let to = i + increment;
 
-            console.log('\nSending GET request for blocks: ' + from + ' to ' + to );
+            console.log('Sending GET request for blocks: ' + from + ' to ' + to );
             let newData = await this.getEventTxHelper(from, to, eventHash);
-            console.log('Received GET request for blocks: ' + from + ' to ' + to );
+            console.log('Received GET request for blocks: ' + from + ' to ' + to + '\n');
 
             // Flags if our result potentially overflowed.
             if(newData.result.length >= Constants.MaxApiResponseLength){
                 this.overflowGets.push({'fromBlock': from, 'toBlock': to});
-                console.log('   There was an overflow for GET request blocks: ' + from + ' to ' + to + '!!!');
+                console.log('   There was an overflow for GET request blocks: ' + from + ' to ' + to + '!!!\n');
             }
 
             data = data.concat(newData.result)
         }
 
+        console.log('-----------------------------End of GET Requests-------------------------');
         return data
     }
 
@@ -85,6 +92,7 @@ class etherscanApi {
             }
         }
 
+        console.log('\n\nThe transactions have all finished being processed.');
         return this.processedData;
     }
 
@@ -116,12 +124,19 @@ class etherscanApi {
                         'toAddress': '0x' + transaction.topics[2].substring(26),
                         'transactionHash': transaction['transactionHash'],
                         'timeStamp': transaction['timeStamp'],
+                        'blockNumber': transaction['blockNumber']
                     };
 
                     this.processedData.push(objectToStore);
                 }
             }
         }
+    }
+
+    /// Used to process all the overflowed GET requests.
+    processBadGetPulls(badPulls){
+        // TODO
+        // Process this array of bad pulls with smaller block ranges
     }
 }
 
