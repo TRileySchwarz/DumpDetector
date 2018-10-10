@@ -14,6 +14,4 @@ setTimeout(async function(){
 
     console.log(data.length);
 
-
-
 }, 1);

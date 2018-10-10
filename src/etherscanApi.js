@@ -67,10 +67,7 @@ class etherscanApi {
             } else {
                 data = data.concat(newData.result)
             }
-
-
         }
-
         console.log('-----------------------------End of GET Requests-------------------------');
         return data
     }
