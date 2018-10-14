@@ -25,7 +25,7 @@ class Requester {
             } catch(e){
                 r = response;
             }
-            console.log('*!* http ' + statusCode + ' ' + url);
+            console.log('\n\n*!* http ' + statusCode + ' ' + url);
             console.log(r);
             console.log('*!*    *!*    *!*    *!*    *!*    *!*');
             //console.log('*!* ... ' + r);
@@ -34,7 +34,7 @@ class Requester {
         }
     }
 
-    async get(url, headers, timeout=15000){
+    async get(url, headers, timeout=25000){
         // timeout in milliseconds. we need to fail fast if its sluggish!
         const GET = 'GET';
         let statusCode;
@@ -42,11 +42,21 @@ class Requester {
             'headers' : headers,
             'timeout' : timeout
         };
-        // console.log(url); // TODO remove
+
         let response = syncRequest(GET, url, headerWrapper);
-        // console.log(JSON.parse(response.getBody('utf8'))); // TODO remove
+
         statusCode = response.statusCode;
-        this.checkStatusCode(statusCode, url, response);
+
+        try {
+            this.checkStatusCode(statusCode, url, response);
+        } catch (e){
+            console.log('\n\n CAUGHT ERROR TRYING AGAIN');
+            console.log(e);
+
+            return await this.get(url);
+        }
+
+
         return JSON.parse(response.getBody('utf8'));
     }
 

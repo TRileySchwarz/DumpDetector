@@ -10,7 +10,7 @@ class etherscanApi {
 
     constructor() {
         this.web3 = new Web3('https://mainnet.infura.io');
-        this.etherscanApiKey = process.env.ETHERSCAN_API_KEY;
+        this.etherscanApiKey = '1RGQIXHD36B6I76NBSPADUVEEXSGF9ESZK';
 
         // This stores whether we have seen a transaction before,
         // so we don't accidentally process the same transaction twice.
@@ -106,8 +106,15 @@ class etherscanApi {
             this.etherscanApiKey;
 
         let req = new Requester();
+        let _this = this;
 
-        return await req.get(url);
+        try {
+            return await req.get(url);
+        } catch (e){
+            console.log('\n\n Promise took too long to resolve, trying again...\n');
+
+            return await _this.getEventTxHelper(fromBlock, toBlock, eventHash);
+        }
     }
 
     /// This is proprietary for processing  ERC20 'transfer' events.
@@ -174,4 +181,5 @@ class etherscanApi {
 }
 
 module.exports = etherscanApi;
+
 
