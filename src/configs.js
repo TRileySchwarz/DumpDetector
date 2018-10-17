@@ -6,8 +6,10 @@
 const Increment = 15;
 
 const ImportantBlockNumbers = {
-    //'January1st':
-}
+    // Not actually January 1st, but very close to the block
+    'January1st': 4830000,
+    'EndOfCurrentDatabase': 6500000
+};
 
 // Available Events:
 // 'transfer'

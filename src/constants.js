@@ -1,3 +1,10 @@
+// Imports the Database Schema and pushes through the constants.
+const {
+    BinanceTokenTransferSchema,
+    BlockNumberTimeStampSchema,
+    BinanceWalletLookupSchema
+} = require('../src/DatabaseSchema');
+
 // The event hashes available to lookup on Etherscan.
 const EventHashes = {
     //return keccak256("Transfer(address,address,uint256)");
@@ -16,7 +23,7 @@ const BinanceWallets = {
     '0xD551234Ae421e3BCBA99A0Da6d736074f22192FF': 'binance2',
     '0x564286362092D8e7936f0549571a803B203aAceD': 'binance3',
     '0x0681d8Db095565FE8A346fA0277bFfdE9C0eDBBF': 'binance4',
-    '0xfE9e8709d3215310075d67E3ed32A380CCf451C': 'binance5'
+    '0xfE9e8709d3215310075d67E3ed32A380CCf451C8': 'binance5'
 };
 
 // The max length of an API get response
@@ -27,5 +34,8 @@ module.exports = {
     EventHashes,
     BinanceWallets,
     EventHashesLookup,
-    MaxApiResponseLength
+    MaxApiResponseLength,
+    BinanceTokenTransferSchema,
+    BlockNumberTimeStampSchema,
+    BinanceWalletLookupSchema
 };
