@@ -1,5 +1,4 @@
 let Requester = require('../req/requester');
-let Configs = require('../src/Configs');
 let Constants = require('../src/Constants');
 const Web3 = require('Web3');
 const fs = require('fs');
@@ -18,6 +17,12 @@ class etherscanApi {
         // This stores whether we have seen a transaction before,
         // so we don't accidentally process the same transaction twice.
         this.transactionProcessed = {};
+    }
+
+    /// Sets a global variable of the BinanceWallet Database
+    async setBinanceWalletsGlobal(){
+        // This dictionary contains all the binance wallet addresses so far.
+        this.binanceWallets = await this.mongoInstance.getBinanceWalletDatabase();
     }
 
     /// Returns the most recent block number that is being mined.
@@ -178,6 +183,59 @@ class etherscanApi {
                     break;
                 }
             }
+        }
+    }
+
+    /// This is proprietary for processing  ERC20 'transfer' events.
+    /// Consumes an individual transaction and applies a filter.
+    /// Used for live pulling transaction data that has been processed through a Binance wallet
+    async processTransferTransactionLive(transaction){
+
+        // This filter will ignore transactions that contain more than just a single transfer event per transaction
+        // ie, only transactions that do a single transaction
+        if (transaction.topics.length === 3){
+
+            // Trims the transaction data to appropriate Hash-address length
+            let toAddress = '0x' + transaction.topics[2].substring(26);
+            toAddress = this.web3.utils.toChecksumAddress(toAddress);
+            let transferObject;
+
+            // This verifies we are only flagging transactions that contain tokens we have set in our token database
+            if (Constants.TokenDatabase[transaction['address']]){
+
+                if (this.binanceWallets[toAddress]){
+                    // Define the values stored in our transfer object
+                    transferObject = {
+                        'tokenAddress': transaction['address'],
+                        'amount': parseInt(transaction['data'], 16)
+                    };
+
+                    console.log('Found a Binance Transaction!');
+                } else {
+                    // This is a brand new Binance interim wallet address.
+                    if(Constants.BinanceWallets[toAddress]){
+
+                        // Flag this wallet as an interim wallet without having to pull a new version of mongoDB.
+                        this.binanceWallets[toAddress] = true;
+
+                        // Update our binance wallet database in Mongo
+                        let binanceWalletObject = {
+                            '_id': toAddress,
+                            'walletAddress': toAddress
+                        };
+                        await this.mongoInstance.setBinanceWalletAddress(binanceWalletObject);
+
+                        // The trade was from interim to Binance, we should still record it, even if data is a bit late.
+                        transferObject = {
+                            'tokenAddress': transaction['address'],
+                            'amount': parseInt(transaction['data'], 16),
+                        };
+                        console.log('Found a Binance Transaction!');
+                    }
+                }
+            }
+
+            return transferObject;
         }
     }
 }

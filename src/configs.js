@@ -11,6 +11,9 @@ const ImportantBlockNumbers = {
     'EndOfCurrentDatabase': 6500000
 };
 
+// The amount of confirmations before a token can be traded on Binance
+const BinanceConfirmationWindow = 20;
+
 // Available Events:
 // 'transfer'
 const Event = 'transfer';
@@ -18,5 +21,6 @@ const Event = 'transfer';
 module.exports = {
     Increment,
     Event,
-    ImportantBlockNumbers
+    ImportantBlockNumbers,
+    BinanceConfirmationWindow
 };

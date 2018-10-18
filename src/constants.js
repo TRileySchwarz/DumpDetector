@@ -5,6 +5,11 @@ const {
     BinanceWalletLookupSchema
 } = require('../src/DatabaseSchema');
 
+// Import ERC20 token database
+const {
+    TokenDatabase
+} = require('../db/TokenDatabase');
+
 // The event hashes available to lookup on Etherscan.
 const EventHashes = {
     //return keccak256("Transfer(address,address,uint256)");
@@ -37,5 +42,6 @@ module.exports = {
     MaxApiResponseLength,
     BinanceTokenTransferSchema,
     BlockNumberTimeStampSchema,
-    BinanceWalletLookupSchema
+    BinanceWalletLookupSchema,
+    TokenDatabase
 };
