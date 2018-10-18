@@ -144,12 +144,14 @@ class etherscanApi {
             // Trims the transaction data to appropriate Hash-address length
             let toAddress = '0x' + transaction.topics[2].substring(26);
             toAddress = this.web3.utils.toChecksumAddress(toAddress);
+            let fromAddress = '0x' + transaction.topics[1].substring(26);
+            fromAddress = this.web3.utils.toChecksumAddress(fromAddress);
 
             // This defines which addresses we are trying to match with
             let addressesWeAreLookingFor = Constants.BinanceWallets;
 
             for (let address in addressesWeAreLookingFor){
-                if (toAddress === address){
+                if (toAddress === address && !Constants.BinanceWallets[fromAddress]){
 
                     // Define the values stored in our transfer object
                     let transferObject = {
@@ -198,6 +200,10 @@ class etherscanApi {
             // Trims the transaction data to appropriate Hash-address length
             let toAddress = '0x' + transaction.topics[2].substring(26);
             toAddress = this.web3.utils.toChecksumAddress(toAddress);
+            let fromAddress = '0x' + transaction.topics[1].substring(26);
+            fromAddress = this.web3.utils.toChecksumAddress(fromAddress);
+
+
             let transferObject;
 
             // This verifies we are only flagging transactions that contain tokens we have set in our token database
@@ -209,19 +215,17 @@ class etherscanApi {
                         'tokenAddress': transaction['address'],
                         'amount': parseInt(transaction['data'], 16)
                     };
-
-                    console.log('Found a Binance Transaction!');
                 } else {
                     // This is a brand new Binance interim wallet address.
                     if(Constants.BinanceWallets[toAddress]){
 
                         // Flag this wallet as an interim wallet without having to pull a new version of mongoDB.
-                        this.binanceWallets[toAddress] = true;
+                        this.binanceWallets[fromAddress] = true;
 
                         // Update our binance wallet database in Mongo
                         let binanceWalletObject = {
-                            '_id': toAddress,
-                            'walletAddress': toAddress
+                            '_id': fromAddress,
+                            'walletAddress': fromAddress
                         };
                         await this.mongoInstance.setBinanceWalletAddress(binanceWalletObject);
 
@@ -230,7 +234,6 @@ class etherscanApi {
                             'tokenAddress': transaction['address'],
                             'amount': parseInt(transaction['data'], 16),
                         };
-                        console.log('Found a Binance Transaction!');
                     }
                 }
             }

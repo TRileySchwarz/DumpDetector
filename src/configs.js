@@ -12,15 +12,18 @@ const ImportantBlockNumbers = {
 };
 
 // The amount of confirmations before a token can be traded on Binance
-const BinanceConfirmationWindow = 20;
+const BinanceConfirmationWindow = 150;
 
 // Available Events:
 // 'transfer'
 const Event = 'transfer';
 
+const telegramBotApiKey = "664697581:AAHmGZIW_84foK8H9AKFdKFoLxjW_qpjsmk";
+
 module.exports = {
     Increment,
     Event,
     ImportantBlockNumbers,
-    BinanceConfirmationWindow
+    BinanceConfirmationWindow,
+    telegramBotApiKey
 };

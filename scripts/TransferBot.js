@@ -1,19 +1,8 @@
 let EtherScanApi = require('../src/etherScanApi');
 const Constants = require('../src/constants');
 const Configs = require('../src/configs');
-const fs = require('fs');
 let mongoose = require('mongoose');
-
-
-function printBlockWinds() {
-    console.log('\n    Printing updated block windows...');
-
-    for (let address of Object.keys(this.blockWindows)){
-        console.log('      ' + Constants.TokenDatabase[address]['symbol'] + ' :: Total Value == ' + this.blockWindows[address]['totalValue']);
-    }
-
-    console.log('      Finished printing block windows')
-}
+let TelegramBot = require('../scripts/TelegramBot');
 
 setTimeout(async function(){
 
@@ -22,6 +11,7 @@ setTimeout(async function(){
     _this.api = new EtherScanApi();
     _this.blockWindows = {};
     _this.tokenAddresses = Object.keys(Constants.TokenDatabase);
+    _this.telegramBot = new TelegramBot();
 
     for (let tokenAddress of _this.tokenAddresses){
         _this.blockWindows[tokenAddress] = {
@@ -46,7 +36,9 @@ setTimeout(async function(){
         console.log('**- We have connected to the Mongo Database system -**\n');
         await _this.api.setBinanceWalletsGlobal();
 
-        console.log('\n-------------------Starting Bot--------------------\n');
+        let startBot = '-------------------Starting Bot--------------------';
+        console.log('\n' + startBot +'\n');
+        //await _this.telegramBot.message(startBot);
 
         while(true){
             await _this.api.getCurrentBlock(async function(result){
@@ -89,38 +81,32 @@ setTimeout(async function(){
                         }
 
 
-                        console.log('Printing updated block windows...');
+                        let startOfProcessText = '\n-------Block ' + start + ' has been mined-------\n' +
+                            'The total amount of tokens transferred to Binance in the last ' + Configs.BinanceConfirmationWindow
+                            + ' blocks are as follows:\n\n';
+
+                        console.log(startOfProcessText);
+
+                        let textForTelegramBot = '';
+
                         for (let address of Object.keys(_this.blockWindows)){
-                            console.log(Constants.TokenDatabase[address]['symbol'] + ' :: Total Value == ' + _this.blockWindows[address]['totalValue']);
+                            let textToPrint = "    "+ Constants.TokenDatabase[address]['symbol'] + ' ::= ' + _this.blockWindows[address]['totalValue'];
+                            textForTelegramBot = textForTelegramBot.concat(textToPrint + '\n');
+                            console.log(textToPrint);
+
+                            // !!! Insert check for threshold here!!! if (_this.blockWindows[address]['totalValue']) is greater than threshold, then tell us!!!!!!
                         }
-                        console.log('Finished printing block windows\n')
+                        console.log('\n');
+
+                        _this.telegramBot.message(startOfProcessText + textForTelegramBot);
                     }
                     _this.lastBlockParsed = result;
                 }
-
-                console.log('No new blocks to process...\n')
             });
         }
-
-
-
     });
-
-
-
 }, 1);
 
-
-
-function sumArray(array) {
-    let total = 0;
-
-    for (let value of array){
-        total += value;
-    }
-
-    return total;
-}
 
 function setupArray(){
     let arrayOfValues = [];
