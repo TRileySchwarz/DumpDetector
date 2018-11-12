@@ -38,15 +38,12 @@ setTimeout(async function(){
 
         let startBot = '-------------------Starting Bot--------------------';
         console.log('\n' + startBot +'\n');
-        //await _this.telegramBot.message(startBot);
 
         while(true){
             await _this.api.getCurrentBlock(async function(result){
                 if(result > _this.lastBlockParsed){
 
-                    let start = _this.lastBlockParsed + 1;
-
-                    for(start; start <= result; start++){
+                    for(let start = _this.lastBlockParsed + 1; start <= result; start++){
 
                         let newTransferData = {};
                         let newDataToParse = await _this.api.getEventTxBySingleBlock(start, start, Constants.EventHashes[Configs.Event]);
@@ -72,6 +69,8 @@ setTimeout(async function(){
                             if(newTransferData[tokenAddress]){
                                 // Accommodating for decimals in the tokens
                                 let amount = newTransferData[tokenAddress] / (10 ** Constants.TokenDatabase[tokenAddress]['decimals']);
+                                amount = amount.toFixed();
+                                amount = parseInt(amount);
 
                                 _this.blockWindows[tokenAddress]['valuesInWindow'].push(amount);
                                 _this.blockWindows[tokenAddress]['totalValue'] += amount;
@@ -79,7 +78,6 @@ setTimeout(async function(){
                                 _this.blockWindows[tokenAddress]['valuesInWindow'].push(0)
                             }
                         }
-
 
                         let startOfProcessText = '\n-------Block ' + start + ' has been mined-------\n' +
                             'The total amount of tokens transferred to Binance in the last ' + Configs.BinanceConfirmationWindow

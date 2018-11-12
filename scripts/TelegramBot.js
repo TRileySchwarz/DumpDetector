@@ -20,7 +20,6 @@ class TelegramBot {
         return res;
     }
 
-
     async sendMessage(message){
         // send a message to the telegram channel
         // ex: https://api.telegram.org/bot[BOT_API_KEY]/sendMessage?chat_id=[MY_CHANNEL_NAME]&text=[MY_MESSAGE_TEXT]
@@ -31,7 +30,6 @@ class TelegramBot {
         let res = await r.get(url, {}, 5000);
         return res;
     }
-
 }
 
 module.exports = TelegramBot;

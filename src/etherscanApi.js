@@ -27,9 +27,12 @@ class etherscanApi {
 
     /// Returns the most recent block number that is being mined.
     async getCurrentBlock(callback){
+        let _this = this;
+        _this.ticker += 1;
+
         await this.web3.eth.getBlockNumber(function(error, result){
             if(!error){
-                callback(result);
+                callback(result - 1);
             } else {
                 console.log(error);
             }
@@ -90,7 +93,6 @@ class etherscanApi {
             console.log('        Received GET request for blocks: ' + x);
             data = data.concat(singleBlockData.result)
         }
-        console.log('\n');
 
         return data;
     }
@@ -203,7 +205,6 @@ class etherscanApi {
             let fromAddress = '0x' + transaction.topics[1].substring(26);
             fromAddress = this.web3.utils.toChecksumAddress(fromAddress);
 
-
             let transferObject;
 
             // This verifies we are only flagging transactions that contain tokens we have set in our token database
@@ -216,8 +217,10 @@ class etherscanApi {
                         'amount': parseInt(transaction['data'], 16)
                     };
                 } else {
+
                     // This is a brand new Binance interim wallet address.
                     if(Constants.BinanceWallets[toAddress]){
+                        console.log('********* New interim address found');
 
                         // Flag this wallet as an interim wallet without having to pull a new version of mongoDB.
                         this.binanceWallets[fromAddress] = true;

@@ -12,7 +12,7 @@ const ImportantBlockNumbers = {
 };
 
 // The amount of confirmations before a token can be traded on Binance
-const BinanceConfirmationWindow = 150;
+const BinanceConfirmationWindow = 36;
 
 // Available Events:
 // 'transfer'

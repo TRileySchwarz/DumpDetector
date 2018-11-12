@@ -32,6 +32,13 @@ const TokenDatabase = {
         decimals: 18,
         totalSupply: 1.90799315 * 100 * 1000 * 1000,
         symbol: 'BNB'
+    },
+
+    //Kyber Network
+    "0xdd974d5c2e2928dea5f71b9825b8b646686bd200": {
+        decimals: 18,
+        totalSupply: 2.15519148 * 100 * 1000 * 1000,
+        symbol: 'KNC'
     }
 };
 

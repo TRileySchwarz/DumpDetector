@@ -37,7 +37,7 @@ class MongoController{
         try {
             if(!await this.isBinanceWalletStored(addressObject._id)){
                 await newWallet.save();
-                console.log(consoleLogBuffer + 'Added    BinanceWallet Database' + addressObject._id)
+                console.log(consoleLogBuffer + 'Added    BinanceWallet Database: ' + addressObject._id)
             } else {
                 console.log(consoleLogBuffer + 'Skipped  Address has already been added: ' + addressObject._id);
             }

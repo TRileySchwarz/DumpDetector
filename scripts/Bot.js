@@ -26,6 +26,8 @@ setTimeout(async function(){
 
                 // Process transaction events, and store results in Mongo DB
                 await _this.api.processEventTxs(startBlock, finishBlock, eventHash, increment);
+                
+                console.log("\n\n*~*~*~*~The database has been updated!~*~*~*~*")
             });
     });
 
