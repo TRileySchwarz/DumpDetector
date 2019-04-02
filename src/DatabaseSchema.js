@@ -1,5 +1,5 @@
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 // Example input = {
 // "tokenAddress":"0xdd974d5c2e2928dea5f71b9825b8b646686bd200",
@@ -11,14 +11,14 @@ let Schema = mongoose.Schema;
 // "blockNumber":"0x49b331"
 // };
 const BinanceTokenTransferSchema = new Schema({
-    _id: String,
-    tokenAddress: String,
-    amount: Number,
-    fromAddress: String,
-    toAddress: String,
-    transactionHash: String,
-    timeStamp: String,
-    blockNumber: String
+  _id: String,
+  tokenAddress: String,
+  amount: Number,
+  fromAddress: String,
+  toAddress: String,
+  transactionHash: String,
+  timeStamp: String,
+  blockNumber: String,
 });
 
 // Example Input = {
@@ -26,8 +26,8 @@ const BinanceTokenTransferSchema = new Schema({
 // timeStamp: "0x5a48df44"
 // };
 const BlockNumberTimeStampSchema = new Schema({
-    _id: String,
-    timeStamp: String
+  _id: String,
+  timeStamp: String,
 });
 
 // Example Input = {
@@ -35,12 +35,12 @@ const BlockNumberTimeStampSchema = new Schema({
 // walletAddress: "0x77cdc9a4f33f8cf2392a651553519923ef23808a"
 // };
 const BinanceWalletLookupSchema = new Schema({
-    _id: String,
-    walletAddress: String
+  _id: String,
+  walletAddress: String,
 });
 
 module.exports = {
-    BinanceTokenTransferSchema,
-    BlockNumberTimeStampSchema,
-    BinanceWalletLookupSchema
+  BinanceTokenTransferSchema,
+  BlockNumberTimeStampSchema,
+  BinanceWalletLookupSchema,
 };
