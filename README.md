@@ -49,10 +49,7 @@ later run statistical analysis on how accurate these signals can be. When develo
 back test it to prove your strategy. 
 
 ## Requirements
-
-Up to date versions of NPM and Node are required. 
-
-I am running versions:
+I am running following versions of NPM and Node:
    - npm 6.4.1
    - node 10.13.0 
 
@@ -85,6 +82,10 @@ require one continuous session.
  
     $ sh RunDatabaseBuilder.sh
     
+    
+![DatbaseBuilder](DatabaseBuilderCapture.gif)
+
+
 
 ## Running the Transfer Bot
 
@@ -106,6 +107,8 @@ The Telegram API and Chat ID need to be set for this to push notifications prope
 
 ## TODO
 - Add way to easily turn on and off Telegram bot
+
+- Upload better Gif of DumpDetector Running
 
 - Figure out delay between querying etherscan for blocks
 

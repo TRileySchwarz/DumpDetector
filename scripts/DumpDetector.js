@@ -29,7 +29,7 @@ setTimeout(async function () {
   });
 
   // Initialize a connection to Mongo Database
-  mongoose.connect('mongodb://localhost/test');
+  mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true });
   const db = mongoose.connection;
 
   db.on('error', console.error.bind(console, 'connection error: '));
