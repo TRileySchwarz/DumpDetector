@@ -1,4 +1,4 @@
-#DumpDetector
+# DumpDetector
 
 When the price of a crypto currency you are holding tanks after someone dumps a significant amount of tokens can
 result in devastating losses. If only there was a way to know a dump was coming beforehand...
@@ -50,8 +50,13 @@ back test it to prove your strategy.
 
 ## Requirements
 
-Up to date versions of NPM and Node are required. As well as installing MongoDB and running a local DB on default port
- 20717
+Up to date versions of NPM and Node are required. 
+
+I am running versions:
+   - npm 6.4.1
+   - node 10.13.0 
+
+As well as installing MongoDB and running a local DB on default port 20717
  
 You will need the channel code and the API code for your personal TelegramChannel '../scripts/TelegramBot.js' line 13
 
@@ -69,7 +74,7 @@ and locators for DB Schema
 
 ## Running the Database Builder
 
-First step in running this project is building out the internal wallet database is setting a starting point '../db/lastBlockParsed'
+First step in running this project is building out the internal wallet database by setting a starting point '../db/lastBlockParsed'
 This stores a value that corresponds to the last block parsed. Set this to the block number you wish to start building
 the database from. 
 
@@ -89,7 +94,7 @@ a minimum amount of wallets to run. Theoretically you can have it running simult
 
 If this comes accross new Binance addresses that are not stored as it is parsing transactions, it will add them to the DB.
 
-The Telegram API and Chat ID need to be set for this to push notifications properly
+The Telegram API and Chat ID need to be set for this to push notifications properly to the corresponding Telegram channel
 
  ** ensure Mongod is running in its own terminal
  
@@ -99,13 +104,13 @@ The Telegram API and Chat ID need to be set for this to push notifications prope
 
 
 
-##TODO
+## TODO
 - Add way to easily turn on and off Telegram bot
 
 - Figure out delay between querying etherscan for blocks
 
 - clean up console vs telegram msgs
 
-- Abstract methods out of transferbot
+- Abstract methods out of DumpDetector
 
-- Add way to get blocks of code for 100 blocks, then if too many, go 100/2, if too many 100/2/2 etc... logarithms 
+- Add way to get blocks of code using logarithms ie for 100 blocks, then if too many, go 100/2, if too many 100/2/2 etc...
