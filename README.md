@@ -1,6 +1,6 @@
 # DumpDetector
 
-When the price of a crypto currency you are holding tanks after someone dumps a significant amount of tokens can
+When the price of a crypto currency tanks as a result of someone dumps a significant amount of tokens can
 result in devastating losses. If only there was a way to know a dump was coming beforehand...
 
 Using a combination of the Etherscan API and a database of Internal Binance Wallets we are able to monitor token 
