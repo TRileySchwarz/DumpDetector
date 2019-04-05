@@ -7,6 +7,8 @@ Using a combination of the Etherscan API and a database of Internal Binance Wall
 transfers before they are available for trade on Binance. Thereby giving us the chance the liquidate assets before 
 the price drops. ie front-running
 
+![alt text](/captures/TelegramChannelCapture.png?raw=true)
+
 ## Heuristic 
 Most significant holders are likely to hold their tokens off of exchange in a cold wallet. 
 Before they are able to sell said funds on an exchange like Binance, they must transfer them to their internal wallet.
@@ -83,7 +85,7 @@ require one continuous session.
     $ sh RunDatabaseBuilder.sh
     
     
-![DatbaseBuilder](DatabaseBuilderCapture.gif)
+![DatbaseBuilder](/captures/DatabaseBuilderCapture.gif)
 
 
 
@@ -95,11 +97,18 @@ a minimum amount of wallets to run. Theoretically you can have it running simult
 
 If this comes accross new Binance addresses that are not stored as it is parsing transactions, it will add them to the DB.
 
-The Telegram API and Chat ID need to be set for this to push notifications properly to the corresponding Telegram channel
+The Telegram API and Chat ID need to be set for this to push notifications properly to the corresponding Telegram channel.
+
+You will also need your own .env file that contains the following variable...
+
+  TELEGRAM_BOT_API_KEY="Insert your API key here"
 
  ** ensure Mongod is running in its own terminal
  
     $ sh RunDumpDetector.sh
+    
+    
+ ![alt text](/captures/DumpDetectorCapture.png?raw=true)
 
 
 
