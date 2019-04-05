@@ -1,37 +1,36 @@
 # DumpDetector
 
-When the price of a crypto currency tanks as a result of someone dumps a significant amount of tokens can
+When the price of a crypto currency tanks as the result of someone dumping a significant amount of tokens this can
 result in devastating losses. If only there was a way to know a dump was coming beforehand...
 
 Using a combination of the Etherscan API and a database of Internal Binance Wallets we are able to monitor token 
-transfers before they are available for trade on Binance. Thereby giving us the chance the liquidate assets before 
-the price drops. ie front-running
+transfers before they are available for trade on Binance. Thereby giving us the chance the liquidate our own assets before 
+the price drops.
 
 ![alt text](/captures/TelegramChannelCapture.png?raw=true)
 
 ## Heuristic 
 Most significant holders are likely to hold their tokens off of exchange in a cold wallet. 
-Before they are able to sell said funds on an exchange like Binance, they must transfer them to their internal wallet.
+Before they are able to sell on an exchange like Binance, they must transfer them to their internal wallet.
 Whereby after 36 confirmations(new blocks) they are available for trade. This means that there is theoretically a 36 block
-window, roughly 5 minutes depending on the network congestion, where it is public knowledge how many tokens have been sent to exchange. 
+window, roughly 5 minutes depending on the network congestion, where it is public knowledge how many tokens have been sent to an exchange. 
 It is in the traders best interest to reduce the amount of time between sending to exchange and selling off the tokens
 as to avoid any potential front-running. 
 
 There are a few things that we need to resolve before we can figure this out.
 
-- Firstly, we need a database of internal Binance Wallets. 
+- First, we need a database of internal Binance Wallets. 
 
-- Secondly, we need a tool that monitors ERC20 transfers and provides notifications when there is incoming transactions to 
-said internal Binance Wallets.
+- Second, we need a tool that monitors ERC20 transfers and provides notifications when there are incoming transactions to Binance Wallets.
 
 ## Solution
 The following project demonstrates my approach to solving this problem.
 
-This tool consists of 2 main funtionalities. First up is the 'DatabaseBuilder.js'. We must parse through every block since 
-Binance's inception to determine all of the internal wallets. This is at the time of writing roughly 3 million blocks.
-We know that there is two types of transfers into the Binance Internal Hot wallets. Either it's an internal Binance 
+This tool consists of 2 main funtionalities. First is the 'DatabaseBuilder.js'. We must parse through every block since 
+Binance's inception to determine all of the internal wallets. At the time of writing this is roughly 3 million blocks.
+We know that there are two types of transfers into the Binance Internal Hot wallets. Either it's an internal Binance 
 generated wallet, or someone who accidentally sent their funds directly to Binance. The latter results in a loss of your 
-funds. We will therefore assume that every address sending tokens to the Binance Wallets, is therefore an internal wallet.
+funds. Therefore, we will assume that every Binance address receiving tokens is an internal wallet.
 
 By parsing all blocks and looking at every ERC20 token transfer event, we can single out the transactions where the 
 'to' address is one of Binance's Hot Wallets. This process takes approximately 2 days to build up the database while 
