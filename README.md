@@ -79,14 +79,12 @@ the database from.
 This value will be updated as the program runs so that you are able to build out the database in batches, and does not 
 require one continuous session.
 
-TODO... Need to fix the scripts to launch via terminal and add stuff like auto launching mongod on port if not already running etc.
-
  ** ensure Mongod is running in its own terminal
  
     $ sh RunDatabaseBuilder.sh
     
     
-![DatbaseBuilder](/captures/DatabaseBuilderCapture.gif)
+![DatbaseBuilder](/captures/DatabaseBuilder.gif)
 
 
 
@@ -103,9 +101,6 @@ You will also need your own .env file that contains the following variable...
 
   TELEGRAM_BOT_API_KEY="Insert your API key here"
   
-  
-TODO... Need to fix the scripts to launch via terminal and add stuff like auto launching mongod on port if not already running etc.
-
  ** ensure Mongod is running in its own terminal
  
     $ sh RunDumpDetector.sh
@@ -130,4 +125,4 @@ TODO... Need to fix the scripts to launch via terminal and add stuff like auto l
 
 - Add way to get blocks of code using logarithms ie for 100 blocks, then if too many, go 100/2, if too many 100/2/2 etc...
 
-- Need to fix the scripts to launch via terminal and add stuff like auto launching mongod on port if not already running etc.
+- Implement Forever package to allow script to restart
